@@ -18,9 +18,6 @@ void Encoders_Init()
 	P1IFG &= 0xff80;	// clear interrupt flags
 	Enable_RE_Interrupt();	// enable interrupt
 	
-	// enable CLIMIT interrupt
-	P1IE |= 1;
-	
 	unsigned int portData = P1IN;
 	RE1.a = (portData & BIT1) == BIT1 ? 1 : 0;
 	RE1.b = (portData & BIT2) == BIT2 ? 1 : 0;
