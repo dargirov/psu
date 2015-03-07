@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <configuration>
+    <name>Debug</name>
+    <toolchain>
+      <name>MSP430</name>
+    </toolchain>
+    <debug>1</debug>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <toolchain>
+      <name>MSP430</name>
+    </toolchain>
+    <debug>0</debug>
+  </configuration>
+  <file>
+    <name>$PROJ_DIR$\adc.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\adc.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\dac.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\dac.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\encoder.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\encoder.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\lcd.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\lcd.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\system.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\system.h</name>
+  </file>
+</project>
+
+
