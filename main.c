@@ -5,12 +5,14 @@
 #include "adc.h"
 #include "encoder.h"
 
+
+volatile int displayVset = 0;
 volatile int displayIlim = 0;
 volatile int displayOverCurrent = 0;
 
 int main(void)
 {
-	unsigned long i = 0, j = 0;
+	unsigned long main_loop_counter = 0, display_delay_counter = 0;
 	Vout_Data_t vout, vout_old;
 	
 	// Stop watchdog timer to prevent time out reset
@@ -26,7 +28,7 @@ int main(void)
 	Reset_Status_LED(LED_Yellow);
 	Reset_Status_LED(LED_Red);
 	
-	/*LCD_go_line1();
+	LCD_go_line1();
 	LCD_send_string("USB PSU");
 	LCD_go_line2();
 	LCD_send_char('A');
@@ -35,58 +37,22 @@ int main(void)
 	LCD_send_char(0xb8);
 	LCD_send_char('p');
 	LCD_send_char('o');
-	LCD_send_char(0xb3);*/
+	LCD_send_char(0xb3);
 	
-	
-	
-	
-	//DAC_Command(DACA, 0x1ff);
-	//DAC_Command(DACB, 0x1ff);
-	
-	//Increment_Vout();
-	//Increment_Vout();
-	
-	/*ADC_Init();
-	
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Decrement_Vout();
-	
-	LCD_clear();
-	LCD_send_number(0x3ff);*/
-	
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
-	Increment_Vout();
+	vout = Get_Vout();
+	vout.DAC_value = DAC_VOUT_MAX_VALUE / 2;
+	Set_Vout(vout);
 	Increment_Vout();
 	
 	for(;;)
 	{
-		//continue;
-		if (i++ == 100000)
+		if (displayVset == 1 || main_loop_counter == 100000)
 		{
 			Disable_RE_Interrupt();
 			Set_Status_LED(LED_Red);
-			
+			displayVset = 0;
+			main_loop_counter = 0;
+		
 			vout = Get_Vout();
 			ADC12CTL0 |= (ADC12SC | ADC12ENC);
 			while ((ADC12CTL1 & ADC12BUSY) == ADC12BUSY);
@@ -99,7 +65,6 @@ int main(void)
 			LCD_go_line2();
 			LCD_send_string("Vm:");
 			LCD_send_double(Get_Vout().Vmeasured);
-			i = 0;
 			
 			Reset_Status_LED(LED_Red);
 			Enable_RE_Interrupt();
@@ -108,7 +73,6 @@ int main(void)
 		if (displayIlim == 1)
 		{
 			Disable_RE_Interrupt();
-			i = 0;
 			displayIlim = 0;
 			LCD_go_line1();
 			LCD_send_string("Imax:   ");
@@ -116,7 +80,7 @@ int main(void)
 			LCD_send_double(Get_Ilim().Vset);
 			LCD_send_string("A  ");
 			Enable_RE_Interrupt();
-			for (; j < 100000; j++);
+			for (display_delay_counter = 0; display_delay_counter < 100000; display_delay_counter++);
 		}
 		
 		if (displayOverCurrent == 1)
@@ -127,17 +91,18 @@ int main(void)
 			vout_old = vout;
 			vout.DAC_value = 0;
 			Set_Vout(vout);
-			i = 0;
 			displayOverCurrent = 0;
 			LCD_go_line1();
 			LCD_send_string("Over    ");
 			LCD_go_line2();
 			LCD_send_string("Current ");
-			for (; j < 100000; j++);
+			for (display_delay_counter = 0; display_delay_counter < 100000; display_delay_counter++);
 			Set_Vout(vout_old);
 			Reset_Status_LED(LED_Red);
 			__enable_interrupt();
 		}
+		
+		main_loop_counter++;
 	}
 }
 

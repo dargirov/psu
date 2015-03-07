@@ -45,7 +45,7 @@ typedef enum
 #define DAC_VOUT_MAX_VALUE 0x3ff
 #define DAC_VOUT_MIN_VALUE 0
 #define DAC_ILIM_MAX_VALUE 490
-#define DAC_ILIM_MIN_VALUE 80
+#define DAC_ILIM_MIN_VALUE 280
 #define DAC_RESOLUTION 1024
 #define DAC_VREF 2.5
 #define ADC_RESOLUTION 4095

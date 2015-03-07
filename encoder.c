@@ -3,6 +3,7 @@
 #include "lcd.h"
 
 static RE_Data RE1, RE2;
+extern volatile int displayVset;
 extern volatile int displayIlim;
 extern volatile int displayOverCurrent;
 
@@ -16,6 +17,9 @@ void Encoders_Init()
 	P1IES |= 0x007f;	// high-to-low transition
 	P1IFG &= 0xff80;	// clear interrupt flags
 	Enable_RE_Interrupt();	// enable interrupt
+	
+	// enable CLIMIT interrupt
+	P1IE |= 1;
 	
 	unsigned int portData = P1IN;
 	RE1.a = (portData & BIT1) == BIT1 ? 1 : 0;
@@ -179,6 +183,7 @@ void RE2_A_handler()
 	RE2.b = b;
 	Delay();
 	Reset_Status_LED(LED_Yellow);
+	displayVset = 1;
 	Toggle_Edge(BIT4);
 }
 
